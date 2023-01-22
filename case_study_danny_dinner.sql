@@ -1,5 +1,3 @@
-
-
 CREATE TABLE sales (
   "customer_id" VARCHAR(1),
   "order_date" DATE,
@@ -51,40 +49,59 @@ VALUES
   ('A', '2021-01-07'),
   ('B', '2021-01-09');
 
-  select * from members;select * from sales;select * from menu;
+
 --1. What is the total amount each customer spent at the restaurant?
-select s.customer_id,sum(m.price) as total_amount_spent
-from sales s  left join menu  m on s.product_id=m.product_id group by customer_id;
+
+SELECT 
+	s.customer_id,
+	SUM(m.price) as total_amount_spent
+FROM sales s  left join menu  m 
+ON s.product_id=m.product_id 
+GROUP BY customer_id;
+
 
 --2. How many days has each customer visited the restaurant?
-select customer_id,count(distinct order_date) as total_visit from sales group by customer_id;
+
+SELECT 
+	customer_id,
+	COUNT(DISTINCT order_date) as total_visit 
+FROM sales 
+GROUP BY customer_id;
+
 
 --3. What was the first item from the menu purchased by each customer?
-SELECT DISTINCT(customer_id), 
-       product_name FROM sales s
-JOIN menu m 
+
+SELECT 
+	DISTINCT(customer_id), 
+       product_name 
+FROM sales s JOIN menu m 
 ON m.product_id = s.product_id
 WHERE s.order_date = ANY 
       (
        SELECT MIN(order_date) 
        FROM sales 
        GROUP BY customer_id
-      )
+      );
+      
 
 --4. What is the most purchased item on the menu and how many times was it purchased by all customers?
- select * from members;select * from sales;select * from menu;
 
-with Max_Purchased_item as
+
+WITH Max_Purchased_item AS
 (
-select m.product_name,count(s.product_id) as total_sales 
-	from sales s left join menu m 
-	on s.product_id=m.product_id
-	group by m.product_name
-	) 
-select * from Max_Purchased_item where total_sales = (select max(total_sales) from Max_Purchased_item);
+SELECT 
+	m.product_name,
+	COUNT(s.product_id) as total_sales 
+FROM sales s left JOIN menu m 
+ON s.product_id=m.product_id
+GROUP BY m.product_name
+)
+SELECT * 
+FROM Max_Purchased_item 
+WHERE total_sales = (SELECT MAX(total_sales) FROM Max_Purchased_item);
+
 
 --5. Which item was the most popular for each customer?
- select * from members;select * from sales;select * from menu;
 
  select s.customer_id,max(s.product_id)
 	from sales s LEFT JOIN menu m 
