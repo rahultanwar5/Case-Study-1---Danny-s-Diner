@@ -21,6 +21,8 @@ Danny has provided you with a sample of his overall customer data due to privacy
 - Menu
 - Members
 
+![App Screenshot](https://github.com/rahultanwar5/Case-Study-1---Danny-s-Diner/blob/main/danny%20dataset%20schema.JPG?raw=true)
+
 ## Case Study Questions
 
 Each of the following case study questions can be answered using a single SQL statement:
